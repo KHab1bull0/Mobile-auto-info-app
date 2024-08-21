@@ -3,7 +3,8 @@ name: Deploy to AWS
   push:
     branches:
       - main
-
+ 
+      
 env:
     DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
     DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
@@ -34,8 +35,8 @@ jobs:
       - name: Log in to DockerHub
         uses: docker/login-action@v3
         with:
-            username: ${{ secrets.DOCKER_USERNAME }}
-            password: ${{ secrets.DOCKER_PASSWORD }}
+            username: ${{ env.DOCKER_USERNAME }}
+            password: ${{ env.DOCKER_PASSWORD }}
 
       - name: Build and push Docker image
         run: |
@@ -54,7 +55,7 @@ jobs:
       - name: Setup SSH Key
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ env.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
           chmod 400 ~/.ssh/id_rsa
           ssh-keyscan -H ${{ env.SERVER_HOST }} >> ~/.ssh/known_hosts
 
@@ -64,12 +65,12 @@ jobs:
           username: ${{ env.SERVER_USERNAME }}
           host: ${{ env.SERVER_HOST }}
           key: ${{ env.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASS_PHRASE }}
+          passphrase: ${{ env.SSH_PASS_PHRASE }}
           script: |
             ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ env.SERVER_USERNAME }}@${{ env.SERVER_HOST}}
             sudo docker stop wallet || true
             sudo docker rm wallet || true
-            sudo docker image rm ${{env.DOCKER_USERNAME}}/wallet:latest
+            sudo docker image rm ${{ env.DOCKER_USERNAME }}/wallet:latest
             sudo docker run -d --restart unless-stopped --link postgres:postgres --name erp -e SMTP_PASSWORD=${{env.SMTP_PASSWORD}} -e SMTP_USER=${{env.SMTP_USER}} -e SMTP_PORT=${{env.SMTP_PORT}} -e SMTP_HOST=${{env.SMTP_HOST}} -e REFRESH_EXPIRE_TIME=${{env.REFRESH_EXPIRE_TIME}} -e ACCESS_EXPIRE_TIME=${{env.ACCESS_EXPIRE_TIME}} -e REFRESH_KEY=${{env.REFRESH_KEY}} -e ACCESS_KEY=${{env.ACCESS_KEY}} -e DATABASE_URL=${{env.DATABASE_URL}} -e PORT=3000 -p 5000:3000 ${{env.DOCKER_USERNAME}}/erpsystem:latest
             sudo docker exec -i erp npx prisma migrate deploy
 
