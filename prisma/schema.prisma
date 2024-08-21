@@ -28,7 +28,7 @@ model User {
   username  String
   password  String
   role      Role    @default(user)
-  photo_url String
+  photo_url String @default("null")
   isActive  Boolean @default(false)
 
   @@map("user")

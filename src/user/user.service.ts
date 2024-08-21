@@ -20,12 +20,12 @@ export class UserService {
       try {
         const { username } = signupUserDto;
         const user = await prisma.user.findFirst({ where: { username: username } });
-        console.log(user);
+        // console.log(user);
 
         if (user) {
           return { message: "Student already exists", status: HttpStatus.BAD_REQUEST }
         }
-        console.log(signupUserDto);
+        // console.log(signupUserDto);
 
         signupUserDto.password = await this.hash.hashPassword(signupUserDto.password);
 
@@ -36,13 +36,13 @@ export class UserService {
 
         let checkotp = false
 
-        const number = this.otp.generateOtp(6)
-        await prisma.otps.create({
-          data: { email: username, otp: number }
-        });
+        // const number = this.otp.generateOtp(6)
+        // await prisma.otps.create({
+        //   data: { username: username, otp: number }
+        // });
 
-        this.mail.sendMail(username, 'Otp', number)
-        checkotp = true
+        // this.mail.sendMail(username, 'Otp', number)
+        // checkotp = true
 
         delete newUser.password;
         return {
@@ -56,8 +56,13 @@ export class UserService {
       }
     });
   }
-  findAll() {
-    return `This action returns all user`;
+  async findAll() {
+    try {
+      return await this.prisma.user.findMany();
+    } catch (e) {
+      console.log(e);
+      throw { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
+    };
   }
 
   findOne(id: number) {
