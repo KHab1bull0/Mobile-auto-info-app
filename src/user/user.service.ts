@@ -15,7 +15,7 @@ export class UserService {
     private readonly otp: OtpService
   ) { }
 
-  async signupStudent(signupUserDto: SignupUserDto) {
+  async signupUser(signupUserDto: SignupUserDto) {
     return this.prisma.$transaction(async (prisma) => {
       try {
         const { username } = signupUserDto;
@@ -63,6 +63,7 @@ export class UserService {
   findOne(id: number) {
     return `This action returns a #${id} user`;
   }
+
 
   remove(id: number) {
     return `This action removes a #${id} user`;
