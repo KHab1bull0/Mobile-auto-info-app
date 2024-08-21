@@ -75,7 +75,7 @@ jobs:
             sudo docker stop wallet || true
             sudo docker rm wallet || true
             sudo docker image rm ${{ env.DOCKER_USERNAME }}/wallet:latest
-            sudo docker run -d --restart unless-stopped --link postgres:postgres --name wallet -e SMTP_PASSWORD=${{env.SMTP_PASSWORD}} -e SMTP_USER=${{env.SMTP_USER}} -e SMTP_PORT=${{env.SMTP_PORT}} -e SMTP_HOST=${{env.SMTP_HOST}} -e REFRESH_EXPIRE_TIME=${{env.REFRESH_EXPIRE_TIME}} -e ACCESS_EXPIRE_TIME=${{env.ACCESS_EXPIRE_TIME}} -e REFRESH_KEY=${{env.REFRESH_KEY}} -e ACCESS_KEY=${{env.ACCESS_KEY}} -e DATABASE_URL=${{env.DATABASE_URL}} -e PORT=3000 -p 6000:4000 ${{env.DOCKER_USERNAME}}/wallet:latest
+            sudo docker run -d --restart unless-stopped --link postgres:postgres --name wallet -e SMTP_PASSWORD=${{env.SMTP_PASSWORD}} -e SMTP_USER=${{env.SMTP_USER}} -e SMTP_PORT=${{env.SMTP_PORT}} -e SMTP_HOST=${{env.SMTP_HOST}} -e REFRESH_EXPIRE_TIME=${{env.REFRESH_EXPIRE_TIME}} -e ACCESS_EXPIRE_TIME=${{env.ACCESS_EXPIRE_TIME}} -e REFRESH_KEY=${{env.REFRESH_KEY}} -e ACCESS_KEY=${{env.ACCESS_KEY}} -e DATABASE_URL=${{env.DATABASE_URL}} -e PORT=4000 -p 6000:4000 ${{env.DOCKER_USERNAME}}/wallet:latest
             sudo docker exec -i erp npx prisma migrate deploy
 
 
