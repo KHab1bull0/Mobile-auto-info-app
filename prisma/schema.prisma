@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  user
+  admin
+}
+
+enum Transaction_type {
+  input
+  output
+}
+
+model User {
+  id        String  @id @default(uuid())
+  username  String
+  password  String
+  role      Role    @default(user)
+  photo_url String
+  isActive  Boolean @default(false)
+
+  @@map("user")
+}
+
+model Category {
+  id          String @id @default(uuid())
+  name        String
+  description String
+
+  @@map("category")
+}
+
+model Transaction {
+  id          String           @id @default(uuid())
+  user_id     String
+  amount      String
+  category_id Boolean          @default(false)
+  type        Transaction_type
+
+  @@map("transaction")
+}
+
+model Otps {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  otp       String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("otps")
+}
+
+model RefreshTokens {
+  id        String   @id @default(uuid())
+  email     String
+  token     String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("refreshtokens")
+}

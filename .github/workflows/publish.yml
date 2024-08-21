@@ -1,0 +1,78 @@
+name: Deploy to AWS
+"on":
+  push:
+    branches:
+      - main
+
+env:
+    DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+    SERVER_USERNAME: ubuntu
+    SERVER_HOST: 3.120.192.20
+    SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+    SMTP_USER: ${{ secrets.SMTP_USER }}
+    SMTP_PORT: ${{ secrets.SMTP_PORT }}
+    SMTP_HOST: ${{ secrets.SMTP_HOST }}
+    REFRESH_EXPIRE_TIME: ${{ secrets.REFRESH_EXPIRE_TIME }}
+    ACCESS_EXPIRE_TIME: ${{ secrets.ACCESS_EXPIRE_TIME }}
+    REFRESH_KEY: ${{ secrets.REFRESH_KEY }}
+    ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
+    DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    PORT: 3000
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Log in to DockerHub
+        uses: docker/login-action@v3
+        with:
+            username: ${{ secrets.DOCKER_USERNAME }}
+            password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t ${{ env.DOCKER_USERNAME }}/erpsystem:latest .
+          docker push ${{ env.DOCKER_USERNAME }}/erpsystem:latest
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 400 ~/.ssh/id_rsa
+          ssh-keyscan -H ${{ env.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to AWS EC2 
+        uses: appleboy/ssh-action@master
+        with:
+          username: ${{ env.SERVER_USERNAME }}
+          host: ${{ env.SERVER_HOST }}
+          key: ${{ env.SSH_PRIVATE_KEY }}
+          passphrase: ${{ secrets.SSH_PASS_PHRASE }}
+          script: |
+            ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ env.SERVER_USERNAME }}@${{ env.SERVER_HOST}}
+            sudo docker stop erp || true
+            sudo docker rm erp || true
+            sudo docker image rm ${{env.DOCKER_USERNAME}}/erpsystem:latest
+            sudo docker run -d --restart unless-stopped --link postgres:postgres --name erp -e SMTP_PASSWORD=${{env.SMTP_PASSWORD}} -e SMTP_USER=${{env.SMTP_USER}} -e SMTP_PORT=${{env.SMTP_PORT}} -e SMTP_HOST=${{env.SMTP_HOST}} -e REFRESH_EXPIRE_TIME=${{env.REFRESH_EXPIRE_TIME}} -e ACCESS_EXPIRE_TIME=${{env.ACCESS_EXPIRE_TIME}} -e REFRESH_KEY=${{env.REFRESH_KEY}} -e ACCESS_KEY=${{env.ACCESS_KEY}} -e DATABASE_URL=${{env.DATABASE_URL}} -e PORT=3000 -p 5000:3000 ${{env.DOCKER_USERNAME}}/erpsystem:latest
+            sudo docker exec -i erp npx prisma migrate deploy
+
+      - name: Result
+        run: echo "Everything is fine !!!"
+
