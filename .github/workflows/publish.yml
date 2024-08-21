@@ -69,7 +69,9 @@ jobs:
           key: ${{ env.SSH_PRIVATE_KEY }}
           passphrase: ${{ env.SSH_PASS_PHRASE }}
           script: |
+            echo "connect start" || true
             ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ${{ env.SERVER_USERNAME }}@${{ env.SERVER_HOST}}
+            echo "connect end" || true
             sudo docker stop wallet || true
             sudo docker rm wallet || true
             sudo docker image rm ${{ env.DOCKER_USERNAME }}/wallet:latest

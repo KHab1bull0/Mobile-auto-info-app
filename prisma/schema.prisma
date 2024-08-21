@@ -54,7 +54,7 @@ model Transaction {
 
 model Otps {
   id        String   @id @default(uuid())
-  email     String   @unique
+  username     String   @unique
   otp       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

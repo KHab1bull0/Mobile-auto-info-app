@@ -12,7 +12,7 @@ RUN npx prisma generate
 
 ENV DOT_ENV_PATH=./.env
 
-EXPOSE 5000
+EXPOSE 6000
 
 CMD ["npm", "run", "start"]
 

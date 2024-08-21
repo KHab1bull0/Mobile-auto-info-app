@@ -1,23 +1,22 @@
 import { IsBoolean, IsOptional, IsString, isString } from "class-validator";
 
 
-export class SignupStudentDto {
+enum Role {
+    user = 'user',
+    admin = 'admin'
+}
+
+export class SignupUserDto {
 
     @IsString()
-    firstname: string;
-
-    @IsString()
-    @IsOptional()
-    lastname: string;
-
-    @IsString()
-    email: string;
+    username: string;
 
     @IsString()
     password: string;
 
     @IsString()
-    phone: string;
+    @IsOptional()
+    role: Role = Role.user
 
     @IsString()
     @IsOptional()
@@ -27,7 +26,6 @@ export class SignupStudentDto {
     @IsOptional()
     isActive: boolean = false;
 
-    @IsString()
-    @IsOptional()
-    group_id: string;
+    
 }
+
