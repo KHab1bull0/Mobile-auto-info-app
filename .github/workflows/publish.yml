@@ -11,6 +11,7 @@ env:
     SERVER_USERNAME: ubuntu
     SERVER_HOST: 3.120.192.20
     SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+    SSH_PASS_PHRASE: ${{ secrets.SSH_PASS_PHRASE }}
     SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
     SMTP_USER: ${{ secrets.SMTP_USER }}
     SMTP_PORT: ${{ secrets.SMTP_PORT }}
