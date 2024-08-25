@@ -13,44 +13,96 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  user
-  admin
+
+enum Cars_type {
+  yengil
+  moto
+  yuk
 }
 
-enum Transaction_type {
-  input
-  output
-}
 
-model User {
+
+model Admin {
   id        String  @id @default(uuid())
-  username  String
+  username  String @unique
   password  String
-  role      Role    @default(user)
-  photo_url String @default("null")
-  isActive  Boolean @default(false)
 
-  @@map("user")
+  @@map("admin")
 }
 
-model Category {
-  id          String @id @default(uuid())
-  name        String
-  description String
+model Xodim {
+  id String @id @default(uuid())
+  name String
+  email String @unique
+  password String
 
-  @@map("category")
+  @@map("xodim")
 }
 
-model Transaction {
-  id          String           @id @default(uuid())
-  user_id     String
-  amount      String
-  category_id Boolean          @default(false)
-  type        Transaction_type
+model Jarima {
+  id String @id @default(uuid())
+  tex_pass_raqami String 
+  mashina_raqami String
+  xodim_id String
+  jarima_egasi String
+  jarima_sanasi String
+  tolov_sanasi String
 
-  @@map("transaction")
+  @@map("jarima")
 }
+
+model Xizmat {
+  id String @id @default(uuid())
+  mashina_raqami String
+  xizmat_turi String
+  xizmat_sanasi String
+  muddati_sanasi String
+
+  @@map("xizmat")
+}
+
+model Service {
+  id String @id @default(uuid())
+  turi String 
+  nomi String
+  sertificat_raqami String
+  rahbat_FISH String
+  manzili String
+  telefon_raqami String
+
+  @@map("service")
+}
+
+model Cars {
+  id String @id @default(uuid())
+  davlat_raqami String @unique
+  model String
+  nomi String
+  turi Cars_type 
+  dvigitel_raqami String
+  ot_kuchi String
+  rangi String
+  mashina_yili String
+  texpassport_raqami String
+
+  @@map("car")
+}
+
+model Prava {
+  id String @id @default(uuid())
+  ism String 
+  familiya String
+  otasi_ismi String
+  tugilgan_yili String
+  yashash_manzili String
+  prava_olingan_sana String
+  prava_muddati String
+  berilgan_joy String
+
+  @@map("prava")
+}
+
+
 
 model Otps {
   id        String   @id @default(uuid())
@@ -61,6 +113,7 @@ model Otps {
 
   @@map("otps")
 }
+
 
 model RefreshTokens {
   id        String   @id @default(uuid())
