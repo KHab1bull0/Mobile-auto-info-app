@@ -33,7 +33,7 @@ export class UserService {
         data: signupUserDto
       });
 
-      return {message: "User created", status: HttpStatus.OK};
+      return {message: "User created", status: HttpStatus.OK, guvohnoma_raqami: guvohnoma.guvohnoma_raqami, role: 'user'};
     } catch (e) {
       console.log(e);
       return { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
