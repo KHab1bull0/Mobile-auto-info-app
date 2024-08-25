@@ -62,15 +62,17 @@ export class PravaService {
 
   async findByPravaId(g_raqami: number) {
     try {
-
+      
       const prava = await this.prisma.prava.findFirst({ where: { guvohnoma_raqami: +g_raqami } });
       if (!prava) {
         return { message: "Bunday prava mavjud emas", status: HttpStatus.BAD_REQUEST };
       }
 
-      const jarimalar = await this.prisma.jarima.findFirst({where: {tex_pass_raqami: g_raqami}});
+      const jarimalar = await this.prisma.jarima.findFirst({where: {tex_pass_raqami: +g_raqami}});
 
-      return { message: 'Prava', status: HttpStatus.OK, umumiy_hujjatlar: {prava: prava, jarima: jarimalar}};
+      console.log(jarimalar);
+      
+      return { message: 'Prava', status: HttpStatus.OK, umumiy_hujjatlar: {prava: prava, jarima: jarimalar || "jarimasi yo'q"}};
 
     } catch (e) {
       console.log(e);

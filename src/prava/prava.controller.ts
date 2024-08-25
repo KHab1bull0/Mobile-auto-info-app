@@ -24,7 +24,7 @@ export class PravaController {
 
   @Get('gr/:guvohnoma_raqami')
   async findByPravaId(@Param('guvohnoma_raqami') g_raqami: number){
-    return this.pravaService.findByPravaId(g_raqami)
+    return this.pravaService.findByPravaId(+g_raqami)
   }
 
   @Patch(':id')
