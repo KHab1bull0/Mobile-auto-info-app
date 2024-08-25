@@ -1,4 +1,12 @@
+import { IsString } from "class-validator";
 
-import { PartialType } from '@nestjs/mapped-types';
 
-export class SigninAdminDto { }
+export class SigninAdminDto {
+    
+    @IsString()
+    username: string;
+
+    @IsString()
+    password: string;
+
+ }
