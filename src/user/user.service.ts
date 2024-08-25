@@ -23,7 +23,9 @@ export class UserService {
       }
 
       const guvohnoma = await this.prisma.prava.findFirst({where: {guvohnoma_raqami: guvohnoma_raqami}});
-      if(guvohnoma){
+      console.log(guvohnoma);
+      
+      if(!guvohnoma){
         return {message: "Bunday guvohnoma_raqami mavjud emas", status: HttpStatus.BAD_REQUEST}
       }
 
