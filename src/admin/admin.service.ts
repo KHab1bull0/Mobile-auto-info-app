@@ -44,15 +44,18 @@ export class AdminService {
       const admin = await this.validateUser(email, password);
       const token = await this.refreshTokenFunc(email, 'admin');
 
+      if (!admin) {
+        return { message: 'Bad request', status: HttpStatus.BAD_REQUEST };
+      }
       if (!token) {
-        return 'Error'
+        return { message: 'Internal server Error', status: HttpStatus.INTERNAL_SERVER_ERROR };
       }
 
       return { message: "Successfully logined", status: HttpStatus.OK, accessToken: token.access };
 
     } catch (e) {
       console.log(e);
-      return { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
+      return { error: e, status: e.status || HttpStatus.INTERNAL_SERVER_ERROR }
     }
   }
 
@@ -112,6 +115,25 @@ export class AdminService {
   }
 
 
+  async deleteAdmin(id: string){
+    try {
+
+      const byId = await this.prisma.admin.findFirst({ where: { id: id } });
+      
+      if (!byId) {
+        return { message: "Admin topilmadi", status: HttpStatus.NOT_FOUND };
+      }
+      const admin = await this.prisma.admin.delete({where: {id: id}});
+
+      return {message: "Admin o'chirildi", status: HttpStatus.OK};
+
+    } catch (e) {
+      console.log(e);
+      return { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
+    }
+  }
+
+
   async refreshTokenFunc(email: string, role: string) {
     try {
       const payload = { email: email, role: role };
@@ -147,8 +169,10 @@ export class AdminService {
 
     const admin = await this.prisma.admin.findFirst({ where: { email: email } });
 
+    console.log(admin);
+    
     if (!admin) {
-      return { message: `Admin not found`, status: HttpStatus.NOT_FOUND }
+      throw { message: `Admin not found`, status: HttpStatus.NOT_FOUND }
     }
 
     if (admin && (await this.hash.comparePasswords(pass, admin.password))) {

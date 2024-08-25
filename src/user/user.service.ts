@@ -22,6 +22,11 @@ export class UserService {
         return {message: "Bu guvohnoma raqami orqali ro'yhatdan o'tilgan", status: HttpStatus.BAD_REQUEST}
       }
 
+      const guvohnoma = await this.prisma.prava.findFirst({where: {guvohnoma_raqami: guvohnoma_raqami}});
+      if(guvohnoma){
+        return {message: "Bunday guvohnoma_raqami mavjud emas", status: HttpStatus.BAD_REQUEST}
+      }
+
       const user = await this.prisma.user.create({
         data: signupUserDto
       });
@@ -36,7 +41,6 @@ export class UserService {
   async findAll(){
     try {
       const users = await this.prisma.user.findMany();
-
       return {message: "Hamma userlar", status: HttpStatus.OK, userlar: users}
     } catch (e) {
       console.log(e);

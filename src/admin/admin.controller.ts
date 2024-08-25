@@ -32,4 +32,9 @@ export class AdminController {
   async updateAdmin(@Param('id') id: string, @Body() signinAdminDto: SigninAdminDto) {
     return this.adminService.updateAdmin(id, signinAdminDto);
   }
+
+  @Delete(':id')
+  async deleteAdmin(@Param('id') id: string){
+    return this.adminService.deleteAdmin(id);
+  }
 }

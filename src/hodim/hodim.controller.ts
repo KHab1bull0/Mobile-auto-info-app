@@ -6,7 +6,7 @@ import { UpdateHodimDto } from './dto/hodim.update';
 
 @Controller('hodim')
 export class HodimController {
-  constructor(private readonly hodimService: HodimService) {}
+  constructor(private readonly hodimService: HodimService) { }
 
   @Post('signup')
   create(@Body() signupAdminDto: SignupHodimDto) {
@@ -33,4 +33,10 @@ export class HodimController {
   async updateAdmin(@Param('id') id: string, @Body() updateHodimDto: UpdateHodimDto) {
     return this.hodimService.updateHodim(id, updateHodimDto);
   }
+
+  @Delete(':id')
+  async deleteAdmin(@Param('id') id: string) {
+    return this.hodimService.deleteHodim(id);
+  }
+
 }

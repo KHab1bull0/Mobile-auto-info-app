@@ -123,6 +123,25 @@ export class HodimService {
   }
 
 
+  async deleteHodim(id: string){
+    try {
+
+      const byId = await this.prisma.xodim.findFirst({ where: { id: id } });
+      
+      if (!byId) {
+        return { message: "Hodim topilmadi", status: HttpStatus.NOT_FOUND };
+      }
+      const hodim = await this.prisma.xodim.delete({where: {id: id}});
+
+      return {message: "Hodim o'chirildi", status: HttpStatus.OK};
+
+    } catch (e) {
+      console.log(e);
+      return { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
+    }
+  }
+
+
   async refreshTokenFunc(email: string, role: string) {
     try {
       const payload = { email: email, role: role };

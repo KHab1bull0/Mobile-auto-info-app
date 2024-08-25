@@ -48,7 +48,7 @@ model User {
 
 model Jarima {
   id              String @id @default(uuid())
-  tex_pass_raqami String
+  tex_pass_raqami Int
   mashina_raqami  String
   xodim_id        String
   jarima_egasi    String
