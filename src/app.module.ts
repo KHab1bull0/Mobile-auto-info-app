@@ -4,6 +4,7 @@ import { JwtModule } from '@nestjs/jwt'
 import { ConfigModule } from '@nestjs/config';
 import { PrismaService } from './helper/prisma.service';
 import { HodimModule } from './hodim/hodim.module';
+import { UserModule } from './user/user.module';
 
 
 @Module({
@@ -14,10 +15,9 @@ import { HodimModule } from './hodim/hodim.module';
     JwtModule.register({
       global: true,
     }),
-
     AdminModule,
-
     HodimModule,
+    UserModule,
   ],
   controllers: [],
   providers: [PrismaService],

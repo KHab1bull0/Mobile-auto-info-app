@@ -29,11 +29,21 @@ model Admin {
 
 model Xodim {
   id       String @id @default(uuid())
-  fullname     String
+  fullname String
   email    String @unique
   password String
 
   @@map("xodim")
+}
+
+model User {
+  id               String @id @default(uuid())
+  firstname        String
+  lastname         String
+  guvohnoma_raqami Int    @unique
+  password         String
+
+  @@map("user")
 }
 
 model Jarima {
@@ -95,6 +105,7 @@ model Prava {
   prava_olingan_sana String
   prava_muddati      String
   berilgan_joy       String
+  guvohnoma_raqami   Int    @unique
 
   @@map("prava")
 }
