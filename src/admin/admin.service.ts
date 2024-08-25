@@ -54,6 +54,17 @@ export class AdminService {
     }
   }
 
+  async allAdmin(){
+    try {
+      
+      const admins = await this.prisma.admin.findMany();
+
+      return {message: 'Hamma adminlar', status: HttpStatus.OK, admins: admins, }
+    } catch (e) {
+      console.log(e);
+      throw { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
+    }
+  }
 
 
   async validateUser(username: string, pass: string) {

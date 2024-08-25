@@ -18,4 +18,9 @@ export class AdminController {
     return this.adminService.login(signinAdminDto)
   }
 
+  @Get('alladmin')
+  findall(){
+    return this.adminService.allAdmin();
+  }
+
 }
