@@ -13,100 +13,95 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 enum Cars_type {
   yengil
   moto
   yuk
 }
 
-
-
 model Admin {
-  id        String  @id @default(uuid())
-  username  String @unique
-  password  String
+  id       String @id @default(uuid())
+  email    String @unique
+  password String
 
   @@map("admin")
 }
 
 model Xodim {
-  id String @id @default(uuid())
-  name String
-  email String @unique
+  id       String @id @default(uuid())
+  fullname     String
+  email    String @unique
   password String
 
   @@map("xodim")
 }
 
 model Jarima {
-  id String @id @default(uuid())
-  tex_pass_raqami String 
-  mashina_raqami String
-  xodim_id String
-  jarima_egasi String
-  jarima_sanasi String
-  tolov_sanasi String
+  id              String @id @default(uuid())
+  tex_pass_raqami String
+  mashina_raqami  String
+  xodim_id        String
+  jarima_egasi    String
+  jarima_sanasi   String
+  tolov_sanasi    String
 
   @@map("jarima")
 }
 
 model Xizmat {
-  id String @id @default(uuid())
+  id             String @id @default(uuid())
   mashina_raqami String
-  xizmat_turi String
-  xizmat_sanasi String
+  xizmat_turi    String
+  xizmat_sanasi  String
   muddati_sanasi String
 
   @@map("xizmat")
 }
 
 model Service {
-  id String @id @default(uuid())
-  turi String 
-  nomi String
+  id                String @id @default(uuid())
+  turi              String
+  nomi              String
   sertificat_raqami String
-  rahbat_FISH String
-  manzili String
-  telefon_raqami String
+  rahbat_FISH       String
+  manzili           String
+  telefon_raqami    String
 
   @@map("service")
 }
 
 model Cars {
-  id String @id @default(uuid())
-  davlat_raqami String @unique
-  model String
-  nomi String
-  turi Cars_type 
-  dvigitel_raqami String
-  ot_kuchi String
-  rangi String
-  mashina_yili String
+  id                 String    @id @default(uuid())
+  davlat_raqami      String    @unique
+  model              String
+  nomi               String
+  turi               Cars_type
+  dvigitel_raqami    String
+  ot_kuchi           String
+  rangi              String
+  mashina_yili       String
   texpassport_raqami String
 
   @@map("car")
 }
 
 model Prava {
-  id String @id @default(uuid())
-  ism String 
-  familiya String
-  otasi_ismi String
-  tugilgan_yili String
-  yashash_manzili String
+  id                 String @id @default(uuid())
+  ism                String
+  familiya           String
+  otasi_ismi         String
+  tugilgan_yili      String
+  yashash_manzili    String
   prava_olingan_sana String
-  prava_muddati String
-  berilgan_joy String
+  prava_muddati      String
+  berilgan_joy       String
 
   @@map("prava")
 }
 
-
-
 model Otps {
   id        String   @id @default(uuid())
-  username     String   @unique
+  username  String   @unique
   otp       String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -114,10 +109,9 @@ model Otps {
   @@map("otps")
 }
 
-
 model RefreshTokens {
   id        String   @id @default(uuid())
-  username     String
+  email     String   @unique
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

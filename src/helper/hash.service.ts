@@ -8,8 +8,6 @@ export class HashService {
 
     async hashPassword(password: string) {
         const salt = await bcrypt.genSalt(this.saltRounds);
-        console.log(salt);
-        
         return await bcrypt.hash(password, salt);
     }
 

@@ -4,7 +4,7 @@ import { IsString } from "class-validator";
 export class SigninAdminDto {
     
     @IsString()
-    username: string;
+    email: string;
 
     @IsString()
     password: string;

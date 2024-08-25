@@ -7,6 +7,8 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
+  app.setGlobalPrefix("api")
+
   const port = process.env.PORT || 4000
   await app.listen(port, () => {
     console.log("Server is working on port ", port)
