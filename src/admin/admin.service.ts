@@ -5,6 +5,7 @@ import { HashService } from 'src/helper/hash.service';
 import { MailService } from 'src/helper/mail.service';
 import { OtpService } from 'src/helper/otp.service';
 import { SigninAdminDto } from './dto/admin.signin';
+import { JwtService } from '@nestjs/jwt';
 
 
 
@@ -14,7 +15,8 @@ export class AdminService {
     private readonly prisma: PrismaService,
     private readonly hash: HashService,
     private readonly mail: MailService,
-    private readonly otp: OtpService
+    private readonly otp: OtpService,
+    private readonly jwtservice: JwtService
   ) { }
 
   async create(signupAdminDto: SignupAdminDto) {
@@ -46,26 +48,53 @@ export class AdminService {
 
       const { username, password } = signinAdminDto;
       const admin = this.validateUser(username, password);
+      const { access } = await this.refreshTokenFunc(username, 'admin');
 
-      return {message: "Successfully logined", status: HttpStatus.OK};
+      return { message: "Successfully logined", status: HttpStatus.OK, accessToken: access };
+
     } catch (e) {
       console.log(e);
       throw { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
     }
   }
 
-  async allAdmin(){
+
+  async allAdmin() {
     try {
-      
       const admins = await this.prisma.admin.findMany();
 
-      return {message: 'Hamma adminlar', status: HttpStatus.OK, admins: admins, }
+      return { message: 'Hamma adminlar', status: HttpStatus.OK, admins: admins, }
     } catch (e) {
       console.log(e);
       throw { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
     }
   }
 
+
+  async refreshTokenFunc(username: string, role: string) {
+
+    const payload = { username: username, role: role };
+    const access = this.jwtservice.sign(payload, { secret: process.env.ACCESS_KEY, expiresIn: process.env.ACCESS_EXPIRE_TIME })
+    const refresh = this.jwtservice.sign(payload, { secret: process.env.REFRESH_KEY, expiresIn: process.env.REFRESH_EXPIRE_TIME })
+
+    const dbrefresh = await this.prisma.refreshTokens.findFirst({
+      where: { username: username }
+    });
+
+    if (dbrefresh) {
+      const updateRefresh = await this.prisma.refreshTokens.update({
+        data: { token: refresh },
+        where: { id: dbrefresh.id }
+      });
+
+    } else {
+      const newRefresh = await this.prisma.refreshTokens.create({
+        data: { username: username, token: refresh }
+      });
+
+    }
+    return { access, refresh }
+  }
 
   async validateUser(username: string, pass: string) {
     const admin = await this.prisma.admin.findFirst({ where: { username: username } });

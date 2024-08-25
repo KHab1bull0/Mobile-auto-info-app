@@ -117,7 +117,7 @@ model Otps {
 
 model RefreshTokens {
   id        String   @id @default(uuid())
-  email     String
+  username     String
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
