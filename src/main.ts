@@ -9,7 +9,10 @@ async function bootstrap() {
 
   app.setGlobalPrefix("api")
   app.enableCors({
-    origin: '*',
+    origin: '*', // Barcha domendan keladigan so'rovlarni ruxsat berish
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Ruxsat berilgan HTTP usullari
+    allowedHeaders: 'Content-Type, Accept, Authorization', // Ruxsat berilgan headers
+    credentials: true, // Agar brauzerdan cookielarni yuborish kerak bo'lsa
   });
 
   const port = process.env.PORT || 4000
