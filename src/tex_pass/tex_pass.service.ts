@@ -86,14 +86,28 @@ export class TexPassService {
 
   async update(id: string, updateTexPassDto: UpdateTexPassDto) {
     try {
-      const prava = await this.prisma.prava.findFirst({ where: { id: id } });
+      const carById = await this.prisma.cars.findFirst({ where: { id: id } });
 
-      if (!prava) {
+      if (!carById) {
         return { message: "Bunday mashina mavjud emas", status: HttpStatus.BAD_REQUEST };
       }
 
-      const info = {
+      const dvigitel = await this.prisma.cars.findFirst({ where: { davlat_raqami: updateTexPassDto.dvigitel_raqami } });
+      const prava = await this.prisma.cars.findFirst({ where: { davlat_raqami: updateTexPassDto.davlat_raqami } })
 
+      if (carById || dvigitel) {
+        return { message: "Bunday mashina mavjud", status: HttpStatus.BAD_REQUEST }
+      }
+
+      const info = {
+        "davlat_raqami": updateTexPassDto.davlat_raqami || carById.davlat_raqami,
+        "model": updateTexPassDto.model || carById.model,
+        "nomi": updateTexPassDto.nomi || carById.nomi,
+        "turi": updateTexPassDto.turi || carById.turi,
+        "dvigitel_raqami": updateTexPassDto.dvigitel_raqami || carById.dvigitel_raqami,
+        "ot_kuchi": updateTexPassDto.ot_kuchi || carById.ot_kuchi,
+        "rangi": updateTexPassDto.rangi || carById.rangi,
+        "mashina_yili": updateTexPassDto.mashina_yili || carById.mashina_yili,
       }
       const updatedPrava = await this.prisma.cars.update({
         data: info,

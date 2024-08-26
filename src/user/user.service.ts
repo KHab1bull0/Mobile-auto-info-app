@@ -15,12 +15,17 @@ export class UserService {
 
   async create(signupUserDto: SignupUserDto) {
     try {
-      const { guvohnoma_raqami } = signupUserDto;
+      const { guvohnoma_raqami, username } = signupUserDto;
 
+      const byUsername = await this.prisma.user.findFirst({where: {username: username }})
       const prava = await this.prisma.user.findFirst({ where: { guvohnoma_raqami: guvohnoma_raqami } });
 
       if (prava) {
         return { message: "Bu guvohnoma raqami orqali ro'yhatdan o'tilgan", status: HttpStatus.BAD_REQUEST }
+      }
+
+      if (byUsername) {
+        return { message: "Bu usernamedan ro'yhatdan o'tilgan", status: HttpStatus.BAD_REQUEST }
       }
 
       const guvohnoma = await this.prisma.prava.findFirst({ where: { guvohnoma_raqami: guvohnoma_raqami } });
