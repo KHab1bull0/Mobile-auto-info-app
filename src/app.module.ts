@@ -10,6 +10,7 @@ import { TexPassModule } from './tex_pass/tex_pass.module';
 import { JarimaModule } from './jarima/jarima.module';
 import { AccessTokenStrategy } from './common/strategies';
 import { PassportModule } from '@nestjs/passport';
+import { ServiceModule } from './service/service.module';
 
 
 @Module({
@@ -30,6 +31,7 @@ import { PassportModule } from '@nestjs/passport';
     PravaModule,
     TexPassModule,
     JarimaModule,
+    ServiceModule,
   ],
   controllers: [],
   providers: [
