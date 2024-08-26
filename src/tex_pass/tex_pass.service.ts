@@ -15,8 +15,15 @@ export class TexPassService {
 
   async create(createTexPassDto: CreateTexPassDto) {
     try {
-      const texpass_raqami = this.otp.generateOtp(6);
 
+      const dvigitel = await this.prisma.cars.findFirst({ where: { davlat_raqami: createTexPassDto.dvigitel_raqami } });
+      const car = await this.prisma.cars.findFirst({ where: { davlat_raqami: createTexPassDto.davlat_raqami } })
+
+      if (car || dvigitel) {
+        return { message: "Bunday mashina mavjud", status: HttpStatus.BAD_REQUEST }
+      }
+
+      const texpass_raqami = this.otp.generateOtp(6);
       const info = {
         ...createTexPassDto,
         texpassport_raqami: texpass_raqami
@@ -35,22 +42,88 @@ export class TexPassService {
 
   async findAll() {
     try {
-      const texpass = await this.prisma.cars.findMany();
+      const cars = await this.prisma.cars.findMany();
+
+      return { message: "Hamma mashinalar", status: HttpStatus.OK, mashinalar: cars };
+
     } catch (e) {
       console.log(e);
       return { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
     }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} texPass`;
+  async findOne(id: string) {
+    try {
+      const prava = await this.prisma.cars.findFirst({ where: { id: id } });
+
+      if (!prava) {
+        return { message: "Bunday mashina mavjud emas", status: HttpStatus.BAD_REQUEST };
+      }
+
+      return { message: 'Mashina info', status: HttpStatus.OK, prava: prava };
+
+    } catch (e) {
+      console.log(e);
+      return { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
+    }
   }
 
-  update(id: number, updateTexPassDto: UpdateTexPassDto) {
-    return `This action updates a #${id} texPass`;
+  async findBytexpass_id(raqami: string) {
+    try {
+
+      const prava = await this.prisma.cars.findFirst({ where: { texpassport_raqami: raqami } });
+      if (!prava) {
+        return { message: "Bunday Mashina mavjud emas", status: HttpStatus.BAD_REQUEST };
+      }
+
+      return { message: 'Prava', status: HttpStatus.OK, prava: prava };
+
+    } catch (e) {
+      console.log(e);
+      return { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} texPass`;
+  async update(id: string, updateTexPassDto: UpdateTexPassDto) {
+    try {
+      const prava = await this.prisma.prava.findFirst({ where: { id: id } });
+
+      if (!prava) {
+        return { message: "Bunday mashina mavjud emas", status: HttpStatus.BAD_REQUEST };
+      }
+
+      const info = {
+
+      }
+      const updatedPrava = await this.prisma.cars.update({
+        data: info,
+        where: { id: id }
+      });
+
+      return { message: "Mashina malumotlari yangilandi", status: HttpStatus.OK, yangilangan_prava: updatedPrava };
+
+    } catch (e) {
+      console.log(e);
+      return { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
+    }
   }
+
+  async remove(id: string) {
+    try {
+      const car = await this.prisma.cars.findFirst({ where: { id: id } });
+
+      if (!car) {
+        return { message: "Bunday mashina mavjud emas", status: HttpStatus.BAD_REQUEST };
+      }
+
+      const deletedCar = await this.prisma.cars.delete({ where: { id: id } });
+
+      return { message: "Mashina malumotlar o'chirildi", status: HttpStatus.OK };
+
+    } catch (e) {
+      console.log(e);
+      return { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
+    }
+  }
+
 }

@@ -87,7 +87,7 @@ model Cars {
   model              String
   nomi               String
   turi               Cars_type
-  dvigitel_raqami    String
+  dvigitel_raqami    String    @unique
   ot_kuchi           String
   rangi              String
   mashina_yili       String
@@ -133,7 +133,7 @@ model RefreshTokens {
 
 model UserRefreshTokens {
   id        String   @id @default(uuid())
-  username     String   @unique
+  username  String   @unique
   token     String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
