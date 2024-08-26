@@ -6,6 +6,7 @@ import { PrismaService } from './helper/prisma.service';
 import { HodimModule } from './hodim/hodim.module';
 import { UserModule } from './user/user.module';
 import { PravaModule } from './prava/prava.module';
+import { TexPassModule } from './tex_pass/tex_pass.module';
 
 
 @Module({
@@ -20,6 +21,7 @@ import { PravaModule } from './prava/prava.module';
     HodimModule,
     UserModule,
     PravaModule,
+    TexPassModule,
   ],
   controllers: [],
   providers: [PrismaService],
