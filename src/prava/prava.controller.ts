@@ -1,7 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
 import { PravaService } from './prava.service';
 import { CreatePravaDto } from './dto/create-prava.dto';
 import { UpdatePravaDto } from './dto/update-prava.dto';
+import { JwtAuthGuard } from 'src/common/guards';
+import { RolesGuard } from 'src/common/guards/role.guard';
+import { Role } from 'src/common/types/role.enum';
+import { Roles } from 'src/common/decorators/role.decorator';
 
 @Controller('prava')
 export class PravaController {
@@ -13,11 +17,15 @@ export class PravaController {
   }
 
   @Get('all')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin, Role.SuperAdmin)
   findAll() {
     return this.pravaService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin, Role.SuperAdmin)
   findOne(@Param('id') id: string) {
     return this.pravaService.findOne(id);
   }
@@ -28,11 +36,15 @@ export class PravaController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin, Role.SuperAdmin)
   update(@Param('id') id: string, @Body() updatePravaDto: UpdatePravaDto) {
     return this.pravaService.update(id, updatePravaDto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin, Role.SuperAdmin)
   remove(@Param('id') id: string) {
     return this.pravaService.remove(id);
   }

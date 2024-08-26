@@ -35,7 +35,8 @@ export class UserService {
         return { message: "Bunday guvohnoma_raqami mavjud emas", status: HttpStatus.BAD_REQUEST }
       }
       signupUserDto.password = await this.hash.hashPassword(signupUserDto.password)
-
+      console.log(signupUserDto);
+      
       const user = await this.prisma.user.create({
         data: signupUserDto
       });
@@ -61,8 +62,9 @@ export class UserService {
       if (!token) {
         return { message: 'Internal server Error', status: HttpStatus.INTERNAL_SERVER_ERROR };
       }
+      const user = await this.prisma.user.findFirst({where: {username: username}});
 
-      return { message: "Successfully logined", status: HttpStatus.OK, accessToken: token.access };
+      return { message: "Successfully logined", status: HttpStatus.OK, accessToken: token.access, guvohnoma_raqami: user.guvohnoma_raqami};
 
 
     } catch (e) {
