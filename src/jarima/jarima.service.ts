@@ -1,15 +1,28 @@
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CreateJarimaDto } from './dto/create-jarima.dto';
 import { UpdateJarimaDto } from './dto/update-jarima.dto';
+import { PrismaService } from 'src/helper/prisma.service';
+import { HashService } from 'src/helper/hash.service';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class JarimaService {
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly hash: HashService,
+  ) { }
+
   create(createJarimaDto: CreateJarimaDto) {
     return 'This action adds a new jarima';
   }
 
   findAll() {
-    return `This action returns all jarima`;
+    try {
+      const jarimalar = this.prisma.jarima.findMany();
+    } catch (e) {
+      console.log(e);
+      return { error: e, status: HttpStatus.INTERNAL_SERVER_ERROR }
+    }
   }
 
   findOne(id: number) {
