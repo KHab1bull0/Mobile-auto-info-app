@@ -1,0 +1,791 @@
+{
+	"info": {
+		"_postman_id": "d3f1fd9b-97ed-406f-9f42-85761878a266",
+		"name": "MAI app",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "34639065",
+		"_collection_link": "https://mai-app.postman.co/workspace/MAI-app-Workspace~3b255627-c4dc-4c5e-8a01-48f6a0a3ed51/collection/34639065-d3f1fd9b-97ed-406f-9f42-85761878a266?action=share&source=collection_link&creator=34639065"
+	},
+	"item": [
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"accessToken\", jsonData.accessToken);",
+									"pm.environment.set(\"refreshToken\", jsonData.refreshToken);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admir@gmail.com\",\n    \"password\": \"asdfasdf\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/admin/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sign up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admir@gmail.com\",\n    \"password\": \"asdfasdf\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/admin/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Adminlar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/admin/adminlar",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"adminlar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/admin/2e920b17-48ae-4334-9212-d7a892d7822d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"2e920b17-48ae-4334-9212-d7a892d7822d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update admin",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"admin\",\n    \"password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/admin/2e920b17-48ae-4334-9212-d7a892d7822d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"2e920b17-48ae-4334-9212-d7a892d7822d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete admin",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/admin/4e11d6af-8ed8-4174-8988-a9a37aa53638",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"admin",
+								"4e11d6af-8ed8-4174-8988-a9a37aa53638"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hodim",
+			"item": [
+				{
+					"name": "Sign up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullname\": \"Tohir saidov\",\n    \"email\": \"tohir@gmail.com\",\n    \"password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/hodim/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"hodim",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"tohir1@gmail.com\",\n    \"password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/hodim/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"hodim",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hodimlar",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/hodim/hodimlar",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"hodim",
+								"hodimlar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Hodim By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/hodim/2e920b17-48ae-4334-9212-d7a892d7822d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"hodim",
+								"2e920b17-48ae-4334-9212-d7a892d7822d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update hodim",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/hodim/9c63bce7-ffdf-4d61-895d-e65d4c4e66cb",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"hodim",
+								"9c63bce7-ffdf-4d61-895d-e65d4c4e66cb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Hodim",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/hodim/554c10d8-a6ba-470a-b682-edbfae827a0f",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"hodim",
+								"554c10d8-a6ba-470a-b682-edbfae827a0f"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Sign up",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"firstname\": \"Hamid\",\n    \"lastname\": \"hamidov\",\n    \"username\": \"ahmadieg\",\n    \"guvohnoma_raqami\": 795507,\n    \"password\": \"12345\"\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/signup",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"ahmadi\",\n    \"password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/user/userlar",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"userlar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/hodim/2e920b17-48ae-4334-9212-d7a892d7822d",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"hodim",
+								"2e920b17-48ae-4334-9212-d7a892d7822d"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullname\": \"Tohir saidov\",\n    \"password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/user/9c63bce7-ffdf-4d61-895d-e65d4c4e66cb",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"9c63bce7-ffdf-4d61-895d-e65d4c4e66cb"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/user/7819bde1-ca87-4d6e-b323-380208854654",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"user",
+								"7819bde1-ca87-4d6e-b323-380208854654"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Guvohnoma",
+			"item": [
+				{
+					"name": "Create Prava",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ism\": \"Dilshod\",\n    \"familiya\": \"Odilov\",\n    \"otasi_ismi\": \"Obid\",\n    \"tugilgan_yili\": \"04.04.2000\",\n    \"yashash_manzili\": \"Toshkent\",\n    \"prava_olingan_sana\": \"02.08.2019\",\n    \"prava_muddati\": \"02.08.2024\",\n    \"berilgan_joy\": \"Chilonzor tumani IIB\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/prava/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"prava",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All prava",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/prava/all",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"prava",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By guvohnoma_raqami",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/prava/gr/321842",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"prava",
+								"gr",
+								"321842"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/prava/9e2f03f9-24ec-488d-a566-5e6d9ab4b379",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"prava",
+								"9e2f03f9-24ec-488d-a566-5e6d9ab4b379"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Prava",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"berilgan_joy\": \"Toshkent shahar Chilonzor tumani IIB\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/prava/9e2f03f9-24ec-488d-a566-5e6d9ab4b379",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"prava",
+								"9e2f03f9-24ec-488d-a566-5e6d9ab4b379"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Prava",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/prava/9e2f03f9-24ec-488d-a566-5e6d9ab4b379",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"prava",
+								"9e2f03f9-24ec-488d-a566-5e6d9ab4b379"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Car",
+			"item": [
+				{
+					"name": "Create car",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"davlat_raqami\":\"01A346CV\",\n    \"model\": \"chevrolet\",\n    \"nomi\": \"spark\",\n    \"turi\": \"yengil\",\n    \"dvigitel_raqami\": \"23r34dfasg324\",\n    \"ot_kuchi\": \"102\",\n    \"rangi\": \"oq\",\n    \"mashina_yili\": \"2020\" \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/car/create",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"car",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All cars",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/car/all",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"car",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get By ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/car/3cfde3f7-3703-401a-9bd4-92fb56eb7a92",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"car",
+								"3cfde3f7-3703-401a-9bd4-92fb56eb7a92"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete By ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/api/car/3cfde3f7-3703-401a-9bd4-92fb56eb7a92",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"car",
+								"3cfde3f7-3703-401a-9bd4-92fb56eb7a92"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update car info",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}/api/car/83ae63ee-12cc-4780-bf29-da6498342c7e",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"api",
+								"car",
+								"83ae63ee-12cc-4780-bf29-da6498342c7e"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
